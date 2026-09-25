@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+probe/
+*.db
+.env
+install-rpi5.sh

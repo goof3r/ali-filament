@@ -1,0 +1,29 @@
+[Unit]
+Description=Skaner filamentu AliExpress - jednorazowy przebieg
+Documentation=file:/opt/ali-filament/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=alifilament
+Group=alifilament
+WorkingDirectory=/opt/ali-filament
+EnvironmentFile=/etc/alifilament.env
+ExecStart=/opt/ali-filament/venv/bin/python -m alifilament.scan
+
+# Chromium potrafi zjesc 600-800 MB. Limit pilnuje, zeby przy wycieku
+# pamieci ubilo skan, a nie caly system (istotne na RPi5).
+MemoryMax=1200M
+TimeoutStartSec=900
+Nice=10
+
+# Skan nie ma powodu dotykac niczego poza wlasnymi danymi.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/ali-filament
+
+StandardOutput=journal
+StandardError=journal

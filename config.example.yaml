@@ -1,0 +1,66 @@
+# Konfiguracja skanera filamentu AliExpress.
+# Docelowo kopiowana do /etc/alifilament/config.yaml — plik czytany jest przy
+# każdym przebiegu, więc zmiana nie wymaga restartu usługi.
+
+# ── Czego szukamy ────────────────────────────────────────────────────────────
+marki:     [jayo, sunlu, kingroon]
+materialy: [PLA, "PLA+", PETG, ABS, ASA]
+
+# Odsiew akcesoriów. Dopasowanie od granicy słowa, bez pilnowania końca
+# (czyli "czyszcząc" łapie też "czyszczące", ale "50g" nie łapie "250g").
+blacklist:
+  - suszarka
+  - dryer
+  - nozzle
+  - dysza
+  - uchwyt
+  - holder
+  - hotend
+  - próbka
+  - sample
+  - 100g
+  - 50g
+  - czyszcząc
+  - cleaning
+  - ekstruder
+  - extruder
+  - naklejka
+  - sticker
+  - żywic          # żywica SLA - nie filament
+  - resin
+
+# ── Skąd ─────────────────────────────────────────────────────────────────────
+magazyny_eu: [PL, ES, CZ, DE, FR, IT, NL, BE]
+wysylka_do:  PL
+waluta:      PLN
+
+# POTWIERDZONE rekonesansem 24.09.2026: AliExpress przyjmuje liste krajow w URL-u
+# (PL,ES,CZ zwrocilo 60 ofert, samo PL tylko 16).
+# true  = jeden URL z lista krajow  -> 12 zapytan; oferta oznaczona jako "magazyn UE"
+# false = petla po magazynach       -> 12 x 8 zapytan; za to znany konkretny kraj
+lista_krajow_w_url: true
+
+# AliExpress nie ma filtra wysylki w adresie (sprawdzone), wiec odsiew
+# robimy po znaczniku przy ofercie.
+# Tryb wysylki w raportach z harmonogramu: darmowa | platna | wszystkie.
+# Skan zbiera zawsze oba, wiec /szukaj pokaze kazdy tryb bez ponownego skanu.
+tryb_wysylki: darmowa
+stron_na_zapytanie: 1
+
+# ── Raport ───────────────────────────────────────────────────────────────────
+top_n:          15
+alert_zl_za_kg: 60.0          # poniżej tej ceny oferta dostaje znacznik ognia
+min_zl_za_kg:   25.0          # ponizej tego progu cena nie moze dotyczyc masy z tytulu
+godziny:        ["08:00", "13:00", "20:00"]
+
+# ── Kupony ───────────────────────────────────────────────────────────────────
+zrodla_kuponow: [pepper]      # lowcychin/picodi sprawdzone i odrzucone - patrz coupons.py
+max_kuponow:    12
+
+# ── Środowisko ───────────────────────────────────────────────────────────────
+katalog_danych: /var/lib/ali-filament
+chromium_path:  ""            # puste = Chromium pobrany przez Playwrighta
+                              # na RPi5 zwykle: /usr/bin/chromium
+opoznienie_min_s: 3.0
+opoznienie_max_s: 8.0
+timeout_strony_s: 60

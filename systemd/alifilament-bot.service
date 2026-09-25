@@ -1,0 +1,27 @@
+[Unit]
+Description=Bot Telegram skanera filamentu AliExpress
+Documentation=file:/opt/ali-filament/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=alifilament
+Group=alifilament
+WorkingDirectory=/opt/ali-filament
+EnvironmentFile=/etc/alifilament.env
+ExecStart=/opt/ali-filament/venv/bin/python -m alifilament.bot
+Restart=on-failure
+RestartSec=15
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/ali-filament
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

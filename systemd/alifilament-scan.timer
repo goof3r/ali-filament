@@ -1,0 +1,22 @@
+[Unit]
+Description=Budzik skanera filamentu (o porze decyduje harmonogram z czatu)
+
+[Timer]
+# Timer budzi skaner co 15 minut, ale to NIE znaczy 96 skanow dziennie.
+# Godziny raportow ustawia sie komenda /godziny w czacie, a zmiana jednostki
+# systemd wymagalaby roota - wiec decyzje "czy to juz ta pora" podejmuje sam
+# program (alifilament/harmonogram.py) i konczy prace po ulamku sekundy,
+# jesli to nie jego okno. Przegladarka rusza tylko o wyznaczonych porach.
+OnCalendar=*-*-* *:00/15:00
+
+# Przebieg przegapiony przez wylaczony RPi5 wykona sie po starcie systemu.
+Persistent=true
+
+# Rozrzut do 3 minut - mniej regularny ruch jest mniej podejrzany dla
+# AliExpressu. Mniejszy niz okno harmonogramu (20 min), wiec nie gubi pory.
+RandomizedDelaySec=180
+
+Unit=alifilament-scan.service
+
+[Install]
+WantedBy=timers.target
