@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-#  ali.sh — sterowanie skanerem na serwerze TESTOWYM 192.168.1.32
+#  ali.sh — sterowanie skanerem na serwerze TESTOWYM (bez roota)
 #
 #  Na RPi5 tę rolę pełni systemd. Tutaj roota nie ma, więc bot chodzi
 #  jako proces odpięty od sesji SSH, a harmonogram obsługuje cron

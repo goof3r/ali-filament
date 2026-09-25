@@ -89,7 +89,7 @@ i ceny pojedynczych szpul wreszcie się ze sobą zgadzają.
 
 ## Instalacja na RPi5
 
-Bot jest już utworzony (`@AliexpressFilament_bot`), a jego token i chat ID są wpisane
+Bot jest już utworzony, a jego token i chat ID są wpisane
 w `install-rpi5.sh` — nie musisz niczego zakładać ani przepisywać.
 
 ### 1. Wgraj pliki na RPi5
@@ -100,17 +100,17 @@ Z tej maszyny (PowerShell), z katalogu projektu:
 cd C:\Users\root\claude-projekty\ali-filament
 
 # <uzytkownik> = konto na RPi5 z prawem sudo (root przez SSH jest zablokowany)
-ssh <uzytkownik>@192.168.5.101 "mkdir -p /tmp/ali-filament"
+ssh <uzytkownik>@<adres-rpi5> "mkdir -p /tmp/ali-filament"
 
 scp -r alifilament tools systemd install.sh install-rpi5.sh requirements.txt `
        config.example.yaml README.md `
-    <uzytkownik>@192.168.5.101:/tmp/ali-filament/
+    <uzytkownik>@<adres-rpi5>:/tmp/ali-filament/
 ```
 
 ### 2. Uruchom instalator na RPi5
 
 ```bash
-ssh <uzytkownik>@192.168.5.101
+ssh <uzytkownik>@<adres-rpi5>
 cd /tmp/ali-filament
 sudo bash install-rpi5.sh
 ```
@@ -309,9 +309,9 @@ Rekonesans struktury danych AliExpressu — gdy parser przestanie cokolwiek znaj
 Zrzuca blob JSON, zrzut HTML i screenshot do `probe/`, po czym pokazuje,
 ile ofert wyciągnął z tego **produkcyjny parser**.
 
-### Środowisko testowe (serwer QL 192.168.1.32)
+### Środowisko testowe (serwer bez roota)
 
-Projekt był budowany i testowany na `qlive@192.168.1.32`, bez instalowania czegokolwiek
+Projekt był budowany i testowany na osobnym serwerze (zwykłe konto), bez instalowania czegokolwiek
 w systemie — konto nie ma sudo, więc biblioteki Chromium leżą rozpakowane lokalnie
 w `~/ali-filament/syslibs` (`apt-get download` + `dpkg -x`), bot chodzi jako proces
 odpięty od sesji SSH, a harmonogram obsługuje cron użytkownika zamiast systemd.
@@ -418,13 +418,13 @@ Z tej maszyny (PowerShell):
 
 ```powershell
 cd C:\Users\root\claude-projekty\ali-filament
-scp -r alifilament tools config.example.yaml <uzytkownik>@192.168.5.101:/tmp/ali-filament/
+scp -r alifilament tools config.example.yaml <uzytkownik>@<adres-rpi5>:/tmp/ali-filament/
 ```
 
 Na RPi5:
 
 ```bash
-ssh <uzytkownik>@192.168.5.101
+ssh <uzytkownik>@<adres-rpi5>
 sudo cp -r /tmp/ali-filament/alifilament /opt/ali-filament/
 sudo cp -r /tmp/ali-filament/tools       /opt/ali-filament/
 sudo systemctl restart alifilament-bot
